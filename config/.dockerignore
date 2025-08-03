@@ -1,0 +1,66 @@
+# .dockerignore - Exclude unnecessary files from Docker build context
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Documentation (not needed in container)
+docs/
+*.md
+LICENSE
+
+# Development files
+.git/
+.gitignore
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# Test files
+test/
+tests/
+*_test.py
+test_*.py
+
+# Build scripts (not needed in container)
+build.sh
+release.sh
+generate-pdf.sh
+install.sh
+test.sh
+Makefile
+
+# CI/CD files
+.github/
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Keep only essential files:
+# - Python source code
+# - requirements.txt
+# - setup.py
+# - Dockerfile
