@@ -38,20 +38,32 @@ jobs:
         pip install -r requirements.txt
         pip install pyinstaller
     
+    - name: Debug environment
+      run: |
+        echo "Current directory: $(pwd)"
+        echo "Directory contents:"
+        ls -la
+        echo "Python version:"
+        python --version
+        echo "PyInstaller version:"
+        pyinstaller --version
+        echo "Checking required files:"
+        ls -la cli.py chunks/ utils/ config/
+    
     - name: Build executable (Unix)
       if: matrix.os != 'windows-latest'
       run: |
         # Set platform-specific name
         export EXECUTABLE_NAME="git-sync-${{ matrix.platform }}-${{ matrix.arch }}"
         
-        # Update spec file with correct name
-        sed -i "s/name='git-sync'/name='$EXECUTABLE_NAME'/" config/git-sync.spec
+        # Create a temporary spec file with correct paths
+        sed "s|../cli.py|cli.py|g; s|../chunks|chunks|g; s|../utils|utils|g; s|name='git-sync'|name='$EXECUTABLE_NAME'|g" config/git-sync.spec > temp-build.spec
         
-        # Build using our spec file
-        pyinstaller config/git-sync.spec --clean
+        # Build using our temporary spec file
+        pyinstaller temp-build.spec --clean
         
-        # Restore spec file
-        sed -i "s/name='$EXECUTABLE_NAME'/name='git-sync'/" config/git-sync.spec
+        # Clean up temporary file
+        rm temp-build.spec
         
         # Test the executable
         ./dist/$EXECUTABLE_NAME --help
@@ -63,14 +75,14 @@ jobs:
         $env:BASE_NAME = "git-sync-${{ matrix.platform }}-${{ matrix.arch }}"
         $env:EXECUTABLE_NAME = "$env:BASE_NAME.exe"
         
-        # Update spec file with correct name (without .exe)
-        (Get-Content config/git-sync.spec) -replace "name='git-sync'", "name='$env:BASE_NAME'" | Set-Content config/git-sync.spec
+        # Create a temporary spec file with correct paths
+        (Get-Content config/git-sync.spec) -replace '\.\./cli\.py', 'cli.py' -replace '\.\./chunks', 'chunks' -replace '\.\./utils', 'utils' -replace "name='git-sync'", "name='$env:BASE_NAME'" | Set-Content temp-build.spec
         
-        # Build using our spec file
-        pyinstaller config/git-sync.spec --clean
+        # Build using our temporary spec file
+        pyinstaller temp-build.spec --clean
         
-        # Restore spec file
-        (Get-Content config/git-sync.spec) -replace "name='$env:BASE_NAME'", "name='git-sync'" | Set-Content config/git-sync.spec
+        # Clean up temporary file
+        Remove-Item temp-build.spec
         
         # Test the executable
         ./dist/$env:EXECUTABLE_NAME --help
