@@ -1,3 +1,33 @@
+# Git-Sync .gitignore
+# Security and build artifacts
+
+# === SECURITY ===
+# Never commit these sensitive files
+*.key
+*.pem
+*.p12
+*.pfx
+*.env
+*.env.local
+*.env.production
+*.env.staging
+.env*
+secrets/
+credentials/
+private/
+.secrets
+.credentials
+config.json
+config.yaml
+config.yml
+.aws/
+.ssh/
+id_rsa*
+id_dsa*
+id_ecdsa*
+id_ed25519*
+
+# === PYTHON ===
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
