@@ -16,7 +16,7 @@ echo "======================="
 
 # Test 1: Python CLI
 echo -e "${BLUE}Test 1: Python CLI${NC}"
-if python ../cli.py --help > /dev/null 2>&1; then
+if python cli.py --help > /dev/null 2>&1; then
     echo -e "${GREEN}✅ Python CLI works${NC}"
 else
     echo -e "${RED}❌ Python CLI failed${NC}"
@@ -25,7 +25,7 @@ fi
 
 # Test 2: System health command
 echo -e "${BLUE}Test 2: System health command${NC}"
-if python ../cli.py sys health > /dev/null 2>&1; then
+if python cli.py sys health > /dev/null 2>&1; then
     echo -e "${GREEN}✅ System health command works${NC}"
 else
     echo -e "${RED}❌ System health command failed${NC}"
@@ -34,9 +34,9 @@ fi
 
 # Test 3: Check if executable exists
 echo -e "${BLUE}Test 3: Executable binary${NC}"
-if [ -f "../dist/git-sync" ] || [ -f "../dist/git-sync-linux-amd64" ]; then
+if [ -f "dist/git-sync" ] || [ -f "dist/git-sync-linux-amd64" ]; then
     # Find the executable
-    EXECUTABLE=$(find ../dist/ -name "git-sync*" -type f | head -1)
+    EXECUTABLE=$(find dist/ -name "git-sync*" -type f | head -1)
     if [ -n "$EXECUTABLE" ]; then
         echo "Found executable: $EXECUTABLE"
         
@@ -56,7 +56,7 @@ fi
 
 # Test 4: Check required files
 echo -e "${BLUE}Test 4: Required files${NC}"
-REQUIRED_FILES=("../cli.py" "../chunks/__init__.py" "../chunks/git_sync.py" "../chunks/sys_check.py" "../requirements.txt" "../setup.py")
+REQUIRED_FILES=("cli.py" "chunks/__init__.py" "chunks/git_sync.py" "chunks/sys_check.py" "requirements.txt" "setup.py")
 
 for file in "${REQUIRED_FILES[@]}"; do
     if [ -f "$file" ]; then
@@ -69,12 +69,12 @@ done
 
 # Test 5: Import test
 echo -e "${BLUE}Test 5: Module imports${NC}"
-cd .. && if python -c "from chunks import git_sync, sys_check; print('Imports OK')" > /dev/null 2>&1; then
+if python -c "from chunks import git_sync, sys_check; print('Imports OK')" > /dev/null 2>&1; then
     echo -e "${GREEN}✅ Module imports work${NC}"
 else
     echo -e "${RED}❌ Module imports failed${NC}"
     exit 1
-fi && cd scripts
+fi
 
 echo ""
 echo -e "${GREEN}🎉 All tests passed!${NC}"
@@ -85,10 +85,10 @@ echo "- Commands: Working"
 echo "- File structure: Complete"
 echo "- Module imports: Working"
 
-if [ -f "../dist/git-sync"* ]; then
+if [ -f "dist/git-sync"* ]; then
     echo "- Binary executable: Available"
 else
-    echo "- Binary executable: Run './build.sh' to create"
+    echo "- Binary executable: Run './scripts/build.sh' to create"
 fi
 
 echo ""

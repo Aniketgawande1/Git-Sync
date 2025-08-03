@@ -46,29 +46,29 @@ fi
 
 # Clean previous builds
 echo -e "${BLUE}Cleaning previous builds...${NC}"
-rm -rf ../build/ ../dist/
+rm -rf build/ dist/
 
 # Build the executable
 echo -e "${BLUE}Building executable...${NC}"
 
 # Update the spec file with the correct name
-sed -i "s/name='git-sync'/name='$EXECUTABLE_NAME'/" ../config/git-sync.spec
+sed -i "s/name='git-sync'/name='$EXECUTABLE_NAME'/" config/git-sync.spec
 
-pyinstaller ../config/git-sync.spec --clean
+pyinstaller config/git-sync.spec --clean
 
 # Restore the original spec file name
-sed -i "s/name='$EXECUTABLE_NAME'/name='git-sync'/" ../config/git-sync.spec
+sed -i "s/name='$EXECUTABLE_NAME'/name='git-sync'/" config/git-sync.spec
 
 # Check if build was successful
-if [ -f "../dist/$EXECUTABLE_NAME" ]; then
-    SIZE=$(du -h "../dist/$EXECUTABLE_NAME" | cut -f1)
+if [ -f "dist/$EXECUTABLE_NAME" ]; then
+    SIZE=$(du -h "dist/$EXECUTABLE_NAME" | cut -f1)
     echo -e "${GREEN}✅ Build successful!${NC}"
     echo -e "${GREEN}📁 Location: dist/$EXECUTABLE_NAME${NC}"
     echo -e "${GREEN}📊 Size: $SIZE${NC}"
     
     # Test the executable
     echo -e "${BLUE}Testing executable...${NC}"
-    if ../dist/$EXECUTABLE_NAME --help > /dev/null 2>&1; then
+    if ./dist/$EXECUTABLE_NAME --help > /dev/null 2>&1; then
         echo -e "${GREEN}✅ Executable test passed!${NC}"
     else
         echo -e "${RED}❌ Executable test failed!${NC}"
