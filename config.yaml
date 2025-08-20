@@ -1,0 +1,5 @@
+repos:
+  - path: "/home/aniketgawande/projects/git-sync-test"
+    upstream: "https://github.com/octocat/Hello-World.git"
+    branch: "master"
+    auto_push: false
